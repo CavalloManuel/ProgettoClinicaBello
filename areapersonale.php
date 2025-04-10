@@ -1,19 +1,20 @@
 <?php
-// Connessione al database
 include 'config.php';
 session_start();
 ?>
+
 <!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>I Nostri Medici - Clinica</title>
-    <link rel="stylesheet" href="./style.css"> <!-- Assicurati di includere il percorso corretto -->
+    <title>Prenotazione Appuntamento - Clinica</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+    <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-    <header>
-    <nav>
+<header>
+        <nav>
             <ul>
                 <li><a href="index.php">Home</a></li>
                 <li><a href="medici.php">I Nostri Medici</a></li>
@@ -24,7 +25,6 @@ session_start();
                 <li class="auth-container">
                     <span class="auth-toggle">Ciao, <?php echo htmlspecialchars($_SESSION['user_name']); ?> ▼</span>
                     <div class="auth-dropdown">
-                        <a href="areapersonale.php">Area Personale</a>
                         <a href="index.php?logout=1">Esci</a>
                     </div>
                 </li>
@@ -40,24 +40,27 @@ session_start();
             </ul>
         </nav>
     </header>
+    <br>
 
     <div class="container">
-        <h2>I Nostri Medici</h2>
+        <h2>Le tue informazioni</h2>
         <ul>
-            <?php 
-            $query = "SELECT * FROM medici";
-            $result = $conn->query($query);
-            $medici = $result->fetch_all(MYSQLI_ASSOC);
-            foreach ($medici as $medico){
-                echo "<li>";
-                echo "<h3>". $medico['nome'] ."</h3>";
-                echo "<br>";
-                echo "<p>Specializzazione: ". $medico['specializzazione'] ."</p>";
-                echo "<br> <br>";
-                echo "</li>";
-            }
+
+            <?php
+            // var_dump($_SESSION);
+            echo "<h5> Benvenuto , " . $_SESSION['user_name'] . " " . $_SESSION['user_surname'] . "</h5>";
+            echo "<h5> La tua email: " . $_SESSION['user_email'] . "</h5>";
+            echo "<h5> Il tuo numero di telefono: " . $_SESSION['user_telefono'] . "</h5>";
             ?>
+            <h5>"Le tue visite programmate : "</h5>
+            <h5>"Storico delle tue visite : "</h5>
         </ul>
     </div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <footer>
+        <p>&copy; 2025 Clinica. Tutti i diritti riservati.</p>
+    </footer>
 </body>
-</html>

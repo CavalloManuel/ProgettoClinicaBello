@@ -1,5 +1,14 @@
 <?php
+// index.php (pagina principale)
 include 'config.php';
+session_start();
+
+// Logout
+if (isset($_GET['logout'])) {
+    session_destroy();
+    header("Location: index.php");
+    exit();
+}
 ?>
 
 <!DOCTYPE html>
@@ -8,48 +17,91 @@ include 'config.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prenotazione Appuntamento - Clinica</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
     <link rel="stylesheet" href="./style.css">
 </head>
 <body>
     <header>
         <nav>
             <ul>
-                <li><a href="index.php">Home  </a></li>
-                <li><a href="medici.php">I Nostri Medici  </a></li>
-                <li><a href="services.php">Servizi  </a></li>
-                <li><a href="contact.php">Contatti  </a></li>
+                <li><a href="index.php">Home</a></li>
+                <li><a href="medici.php">I Nostri Medici</a></li>
+                <li><a href="services.php">Servizi</a></li>
+                <li><a href="contact.php">Contatti</a></li>
+                
+                <?php if(isset($_SESSION['user_id'])): ?>
+                <li class="auth-container">
+                    <span class="auth-toggle">Ciao, <?php echo htmlspecialchars($_SESSION['user_name']); ?> ▼</span>
+                    <div class="auth-dropdown">
+                        <a href="areapersonale.php">Area Personale</a>
+                        <a href="?logout=1">Esci</a>
+                    </div>
+                </li>
+                <?php else: ?>
+                <li class="auth-container">
+                    <span class="auth-toggle">Accedi/Registrati ▼</span>
+                    <div class="auth-dropdown">
+                        <a href="login.php">Accedi</a>
+                        <a href="register.php">Registrati</a>
+                    </div>
+                </li>
+                <?php endif; ?>
             </ul>
         </nav>
     </header>
 
     <div class="banner">
-        <h1>Benvenuto alla Clinica! Prenota il tuo Appuntamento Oggi</h1>
+        <h1>Benvenuto alla Clinica!</h1>
         <p>Un team di esperti medici è a tua disposizione.</p>
-    </div>
-
-    <div class="container">
-        <h2>Prenota un Appuntamento</h2>
-        <form method="POST" action="index.php">
-            <label for="user_id">ID Utente:</label>
-            <input type="number" id="user_id" name="user_id" required>
-
-            <label for="medico_id">Scegli il Medico:</label>
-            <select id="medico_id" name="medico_id" required>
-                <?php foreach ($medici as $medico): ?>
-                    <option value="<?= $medico['id']; ?>"><?= $medico['nome']; ?></option>
-                <?php endforeach; ?>
-            </select>
-
-            <label for="data_appuntamento">Data Appuntamento:</label>
-            <input type="date" id="data_appuntamento" name="data_appuntamento" required>
-
-            <button type="submit">Prenota Appuntamento</button>
+        <br>
+        <form method="POST" action="login.php">
+            <div class="form-group" >
+            <button type="submit" >Prenota il tuo Appuntamento</button>
+            </div>
         </form>
 
-        <?php if (isset($message)): ?>
-            <p class="success-message"><?= $message; ?></p>
-        <?php endif; ?>
     </div>
+
+
+
+<!-- Carousel -->
+    <div class="row justify-content-center">
+  <div class="col-md-8 col-lg-6"> <!-- Larghezza variabile in base al breakpoint -->
+  <div id="carouselExample" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+        <div class="carousel-inner">
+        <div class="carousel-item active">
+            <img src="Images/img2.png" class="d-block w-100" alt="Slide 1">
+        </div>
+        <div class="carousel-item">
+            <img src="Images/img3.png" class="d-block w-100" alt="Slide 2">
+        </div>
+        <div class="carousel-item">
+            <img src="Images/img4.png" class="d-block w-100" alt="Slide 2">
+        </div>
+        <div class="carousel-item">
+            <img src="Images/img5.png" class="d-block w-100" alt="Slide 2">
+        </div>
+        <div class="carousel-item">
+            <img src="Images/img6.png" class="d-block w-100" alt="Slide 2">
+        </div>
+        <div class="carousel-item">
+            <img src="Images/img7.png" class="d-block w-100" alt="Slide 2">
+        </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+        </button>
+    </div>
+  </div>
+</div>
+
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <footer>
         <p>&copy; 2025 Clinica. Tutti i diritti riservati.</p>
