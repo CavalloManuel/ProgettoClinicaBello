@@ -7,7 +7,9 @@ $error = '';
 
 if (isset($_POST['register'])) {
     $name = trim($_POST['reg_name']);
+    $surname = trim($_POST['reg_surname']);
     $email = trim($_POST['reg_email']);
+    $telefono = trim($_POST['reg_telefono']);
     $password = trim($_POST['reg_password']);
     $confirm_password = trim($_POST['confirm_password']);
     
@@ -33,14 +35,15 @@ if (isset($_POST['register'])) {
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
             
             // Inserimento utente (usando prepared statements)
-            $insert_stmt = $conn->prepare("INSERT INTO users (name, surname, telefono, email, password) VALUES ('" . $name ." ' , " . $surname ." , " . $telefo ." , " . $email ." , " . $hashed_password ." )");
-            
+            $insert_stmt = $conn->prepare("INSERT INTO users (name, surname, telefono, email, password) VALUES ('" . $name ."'  , '" . $surname ."' , '" . $telefono ."' , '" . $email ."' , '" . $hashed_password ."' )");
+
+
             if ($insert_stmt->execute()) {
                 $_SESSION['user_id'] = $insert_stmt->insert_id;
                 $_SESSION['user_email'] = $email;
                 $_SESSION['user_name'] = $name;
                 $_SESSION['user_surname'] = $surname;
-                $_SESSION['user_telefono'] = $telefo;
+                $_SESSION['user_telefono'] = $telefono;
                 $_SESSION['login'] = true;
                 
                 header("Location: index.php");
@@ -151,7 +154,7 @@ if (isset($_POST['register'])) {
             
             <div class="form-group">
                 <label>Numero di telefono:</label>
-                <input type="numero" name="reg_telefono" required minlength="10">
+                <input type="numero" name="reg_telefono" required length="10" required value="<?php echo isset($_POST['reg_telefono']) ? htmlspecialchars($_POST['reg_telefono']) : ''; ?>"> 
             </div>
 
             <div class="form-group">

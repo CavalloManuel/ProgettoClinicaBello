@@ -18,10 +18,10 @@ if (isset($_POST['login'])) {
         if ($result->num_rows === 1) {
             $user = $result->fetch_assoc();
             
-            if ($password === $user['password']) {
+            if (password_hash($password, PASSWORD_DEFAULT) === $user['password']) {
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['user_email'] = $user['email'];
-                $_SESSION['user_name'] = $user['name'] ?? 'Utente';
+                $_SESSION['user_name'] = $user['name'];
                 $_SESSION['login'] = true; // Aggiungi questa linea
                 header("Location: index.php");
                 exit();
