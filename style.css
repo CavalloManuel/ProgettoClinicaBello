@@ -100,15 +100,7 @@ button:hover {
     margin-top: 20px;
 }
 
-footer {
-    background-color: #007bff;
-    color: white;
-    text-align: center;
-    padding: 20px 0;
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-}
+
 
 
 
@@ -159,3 +151,61 @@ nav ul {
 nav ul li:last-child {
     margin-left: auto;
 }
+
+.img-clinica {
+    max-width: 60%;
+    height: auto;
+}
+
+.col-md-6 p {
+    padding-left: 20px;
+}
+
+.col-md-6 h2 {
+    text-align: left;
+    padding-left: 20px;
+}
+
+.paragrafo-piccolo{
+ font-size: 13px;
+}
+
+
+nav {
+    position: fixed;       /* Fissa la navbar in cima */
+    top: 0;                /* Posiziona la navbar in alto */
+    left: 0;               /* Allinea la navbar a sinistra */
+    width: 100%;           /* La navbar occupa tutta la larghezza */
+    background-color:#007bff; /* Colore di sfondo fisso (modifica a tuo piacere) */
+    color: white;          /* Colore del testo della navbar */
+    z-index: 1000;         /* La navbar rimarrà sopra gli altri elementi */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Aggiungi un'ombra per un effetto visivo */
+}
+
+body {
+    margin-top: 60px;      /* Aggiungi un margine superiore per evitare che il contenuto venga nascosto dalla navbar */
+}
+
+.banner2{
+    background: #007bff;
+    color: white;
+    display: flex;
+    justify-content: center;  /* Centra orizzontalmente */
+    align-items: center;      /* Centra verticalmente */
+    gap: 20px;                /* Spazio tra h2 e bottone */
+    flex-wrap: wrap;          /* Permette di andare a capo su schermi piccoli */
+    padding: 30px;
+}
+
+footer {
+    background-color: #007bff;
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+    bottom: 0;
+    width: 100%;
+}
+
+ button:hover {
+    background-color: #58af4c;
+  }
