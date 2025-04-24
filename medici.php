@@ -25,7 +25,7 @@ session_start();
                     <span class="auth-toggle">Ciao, <?php echo htmlspecialchars($_SESSION['user_name']); ?> ▼</span>
                     <div class="auth-dropdown">
                         <a href="areapersonale.php">Area Personale</a>
-                        <a href="index.php?logout=1">Esci</a>
+                        <a href="?logout=1">Esci</a>
                     </div>
                 </li>
                 <?php else: ?>
@@ -40,24 +40,50 @@ session_start();
             </ul>
         </nav>
     </header>
-
+    
     <div class="container">
-        <h2>I Nostri Medici</h2>
-        <ul>
+    <h2>I Nostri Medici</h2>
+        <form method="POST" action="medici.php">
+            <select name="specializzazione" id="subject" required>
+                <option value="" selected disabled>Scegli la specializzazione</option>
+                <option value="Cardiologo">Cardiologo</option>
+                <option value="Dermatologo">Dermatologo</option>
+                <option value="Ortopedico">Ortopedico</option>
+            </select>
+            <input type="submit" value="Invia">
+            <br>
+        </form>
+
+      
+      
+
             <?php 
-            $query = "SELECT * FROM medici";
-            $result = $conn->query($query);
-            $medici = $result->fetch_all(MYSQLI_ASSOC);
-            foreach ($medici as $medico){
-                echo "<li>";
-                echo "<h3>". $medico['nome'] ."</h3>";
-                echo "<br>";
-                echo "<p>Specializzazione: ". $medico['specializzazione'] ."</p>";
-                echo "<br> <br>";
-                echo "</li>";
-            }
+            //controllo per non dare come input "seleziona la specializzazione" quando avvio la pagina
+            if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['specializzazione']) && $_POST['specializzazione'] !== "Scegli la specializzazione") {
+ 
+                $query = "SELECT nome From medici where specializzazione = '" . $_POST["specializzazione"] ."';";
+
+                $result = mysqli_query ($conn, $query) or
+                die ("Query fallita " . mysqli_error($conn) . " " . mysqli_errno($conn));
+
+                
+                echo "<ul>";
+                    while ($row = $result->fetch_assoc()) {  
+                    echo "<li>Nome: ".$row['nome']."</li>";
+                    echo "<br>";
+                    
+                    
+                    }
+                echo "</ul>";
+                
+
+                }
             ?>
-        </ul>
+            
+
     </div>
+
+
+
 </body>
 </html>

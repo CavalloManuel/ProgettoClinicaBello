@@ -18,7 +18,7 @@ if (isset($_POST['login'])) {
         if ($result->num_rows === 1) {
             $user = $result->fetch_assoc();
             
-            if (password_hash($password, PASSWORD_DEFAULT) === $user['password']) {
+            if ($password === $user['password']) {
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['user_email'] = $user['email'];
                 $_SESSION['user_name'] = $user['name'];

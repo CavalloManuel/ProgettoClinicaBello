@@ -9,6 +9,22 @@ if (isset($_GET['logout'])) {
     header("Location: index.php");
     exit();
 }
+
+// Se l'utente è già loggato, reindirizzalo alla pagina di prenotazioni
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if (isset($_POST['prenota']) || isset($_POST['prenota_online'])) {
+        // Controlla se l'utente è loggato
+        if (isset($_SESSION['user_id'])) {
+            // Se l'utente è loggato, lo reindirizziamo alla pagina di prenotazione
+            header("Location: prenotazione.php"); // Modifica con il percorso corretto
+            exit();
+        } else {
+            // Se l'utente non è loggato, lo rimandiamo alla pagina di login
+            header("Location: login.php"); // La tua pagina di login
+            exit();
+        }
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -54,9 +70,9 @@ if (isset($_GET['logout'])) {
         <h1>Visite specialistiche e diagnostica</h1>
         <p>Un team di esperti medici è a tua disposizione.</p>
         <br>
-        <form method="POST" action="login.php">
-            <div class="form-group" >
-            <button type="submit" >Prenota il tuo Appuntamento Online</button>
+        <form method="POST" action="index.php">
+            <div class="form-group">
+                <button type="submit" name="prenota">Prenota il tuo Appuntamento Online</button>
             </div>
         </form>
 
@@ -132,10 +148,10 @@ if (isset($_GET['logout'])) {
 </div>
 
 <div class="banner2">
-    <h3>Prenota adesso:</h2>
-    <form method="POST" action="login.php">
-        <div class="form-group" >
-            <button type="submit" >Prenotazioni Online</button>
+    <h3>Prenota adesso:</h3>
+    <form method="POST" action="index.php">
+        <div class="form-group">
+            <button type="submit" name="prenota_online">Prenotazioni Online</button>
         </div>
     </form>
 </div>

@@ -18,10 +18,28 @@ include 'config.php';
         </div>
         <nav>
             <ul>
-                <li><a href="./index.php">Home</a></li>
+                <li><a href="index.php">Home</a></li>
                 <li><a href="medici.php">I Nostri Medici</a></li>
                 <li><a href="services.php">Servizi</a></li>
                 <li><a href="contact.php">Contatti</a></li>
+                
+                <?php if(isset($_SESSION['user_id'])): ?>
+                <li class="auth-container">
+                    <span class="auth-toggle">Ciao, <?php echo htmlspecialchars($_SESSION['user_name']); ?> ▼</span>
+                    <div class="auth-dropdown">
+                        <a href="areapersonale.php">Area Personale</a>
+                        <a href="?logout=1">Esci</a>
+                    </div>
+                </li>
+                <?php else: ?>
+                <li class="auth-container">
+                    <span class="auth-toggle">Accedi/Registrati ▼</span>
+                    <div class="auth-dropdown">
+                        <a href="login.php">Accedi</a>
+                        <a href="register.php">Registrati</a>
+                    </div>
+                </li>
+                <?php endif; ?>
             </ul>
         </nav>
     </header>

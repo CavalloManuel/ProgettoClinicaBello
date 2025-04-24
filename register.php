@@ -32,10 +32,10 @@ if (isset($_POST['register'])) {
             $error = "Email già registrata!";
         } else {
             // Hash della password
-            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+            //$hashed_password = password_hash($password, PASSWORD_DEFAULT);
             
             // Inserimento utente (usando prepared statements)
-            $insert_stmt = $conn->prepare("INSERT INTO users (name, surname, telefono, email, password) VALUES ('" . $name ."'  , '" . $surname ."' , '" . $telefono ."' , '" . $email ."' , '" . $hashed_password ."' )");
+            $insert_stmt = $conn->prepare("INSERT INTO users (name, surname, telefono, email, password) VALUES ('" . $name ."'  , '" . $surname ."' , '" . $telefono ."' , '" . $email ."' , '" . $password ."' )");
 
 
             if ($insert_stmt->execute()) {

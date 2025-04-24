@@ -14,41 +14,57 @@ include 'config.php';
     <header>
         <nav>
             <ul>
-                <li><a href="index.php">Home  </a></li>
-                <li><a href="medici.php">I Nostri Medici  </a></li>
-                <li><a href="services.php">Servizi  </a></li>
-                <li><a href="contact.php">Contatti  </a></li>
+                <li><a href="index.php">Home</a></li>
+                <li><a href="medici.php">I Nostri Medici</a></li>
+                <li><a href="services.php">Servizi</a></li>
+                <li><a href="contact.php">Contatti</a></li>
+                
+                <?php if(isset($_SESSION['user_id'])): ?>
+                <li class="auth-container">
+                    <span class="auth-toggle">Ciao, <?php echo htmlspecialchars($_SESSION['user_name']); ?> ▼</span>
+                    <div class="auth-dropdown">
+                        <a href="areapersonale.php">Area Personale</a>
+                        <a href="?logout=1">Esci</a>
+                    </div>
+                </li>
+                <?php else: ?>
+                <li class="auth-container">
+                    <span class="auth-toggle">Accedi/Registrati ▼</span>
+                    <div class="auth-dropdown">
+                        <a href="login.php">Accedi</a>
+                        <a href="register.php">Registrati</a>
+                    </div>
+                </li>
+                <?php endif; ?>
             </ul>
         </nav>
     </header>
 
     <div class="banner">
-        <h1>Benvenuto alla Clinica! Prenota il tuo Appuntamento Oggi</h1>
+        <h1>Visite specialistiche e diagnostica</h1>
         <p>Un team di esperti medici è a tua disposizione.</p>
+        <br>
+        
+
     </div>
 
     <div class="container">
-        <h2>Prenota un Appuntamento</h2>
-        <form method="POST" action="index.php">
-            <label>Inserisci la tua email:</label>
-            <input type="text" id="user_mail" name="user_mail" required>
-
-            <label for="medico_id">Scegli il Medico:</label>
-            <select id="medico_id" name="medico_id" required>
-                <?php foreach ($medici as $medico): ?>
-                    <option value="<?= $medico['id']; ?>"><?= $medico['nome']; ?></option>
-                <?php endforeach; ?>
-            </select>
-
-            <label for="data_appuntamento">Data Appuntamento:</label>
-            <input type="date" id="data_appuntamento" name="data_appuntamento" required>
-
-            <button type="submit">Prenota Appuntamento</button>
+        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">  
+            E-mail: <input type="text" name="email" value="<?php echo $email;?>">
+            <span class="error">* <?php echo $emailErr;?></span>
+            <br><br>
+            Medico: <input type="text" name="website" value="<?php echo $website;?>">
+            <span class="error"><?php echo $websiteErr;?></span>
+            <br><br>
+            Commento: <textarea name="comment" rows="5" cols="40"><?php echo $comment;?></textarea>
+            <br><br>
+            <br><br>
+            Data Appuntamento:
+            <input type="date" name="data_appuntamento" value="<?php echo $data_appuntamento;?>">
+            <span class="error">* <?php echo $dataAppuntamentoErr;?></span>
+            <br><br>
+            <input type="submit" name="submit" value="Submit">  
         </form>
-
-        <?php if (isset($message)): ?>
-            <p class="success-message"><?= $message; ?></p>
-        <?php endif; ?>
     </div>
 
     <footer>
