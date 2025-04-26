@@ -11,7 +11,8 @@ if (isset($_POST['login'])) {
     $password = trim($_POST['user_password']);
     
     if (!empty($email) && !empty($password)) {
-        $stmt = $conn->prepare("SELECT * FROM users WHERE email = '". $email ."'");
+        $stmt = $conn->prepare("SELECT * FROM users WHERE email = ?");
+        $stmt->bind_param("s", $email);
         $stmt->execute();
         $result = $stmt->get_result();
         
@@ -22,6 +23,9 @@ if (isset($_POST['login'])) {
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['user_email'] = $user['email'];
                 $_SESSION['user_name'] = $user['name'];
+                $_SESSION['user_surname'] = $user['surname']; //
+                $_SESSION['user_email'] = $user['email']; // usati per stamparli nell'area personale
+                $_SESSION['user_telefono'] = $user['telefono']; //
                 $_SESSION['login'] = true; // Aggiungi questa linea
                 header("Location: index.php");
                 exit();

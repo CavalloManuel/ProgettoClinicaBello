@@ -1,5 +1,59 @@
 <?php
 include 'config.php';
+
+$email = $medico = $data_appuntamento = "";
+
+$prenotazione_successo = false; // di default non è successo niente
+$error_user_not_found = "";
+$error_medico_not_found = "";
+
+// Quando il form viene inviato
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $email = trim($_POST['email']); //trimserve pernon salvare gli spazi nel database
+    $medico = trim($_POST['medico']);
+    //$commento = trim($_POST['commento']);
+    $data_prenotazione = trim($_POST['data_prenotazione']);
+
+
+// 1. Trova l'ID dell'utente in base all'email    
+    $query_user = "SELECT id FROM users WHERE email = '" . $_POST["email"] ."';"; 
+    $result_user = mysqli_query($conn, $query_user) or die("Query fallita: " . mysqli_error($conn));
+    if (mysqli_num_rows($result_user) > 0) {
+        $user = mysqli_fetch_assoc($result_user);
+        $user_id = $user['id'];
+    } else {
+        $error_user_not_found = "Errore: Utente non trovato.";
+    }
+
+
+// 2. Trova l'ID del medico in base al nome
+    $query_medico = "SELECT id FROM medici WHERE nome = '" . $_POST["medico"] . "';";
+    $result_medico = mysqli_query($conn, $query_medico) or die("Query fallita: " . mysqli_error($conn));
+
+    if (mysqli_num_rows($result_medico) > 0) { // vuol dire che essendoci piu di una riga la query ha trovato un medico
+        $medico = mysqli_fetch_assoc($result_medico); //trasforma la prima riga in array associativo
+        $medico_id = $medico['id']; // prende solo l'ID e lo salva in $medico_id
+    } else {
+        $error_medico_not_found = "Errore: Medico non trovato.";
+    }
+
+// 3. Inserisci nella tabella prenotazioni
+    if (empty($error_user_not_found) && empty($error_medico_not_found) && !empty($email) && !empty($medico) && !empty($data_prenotazione)) {
+        $query_insert = "INSERT INTO prenotazioni (user_id, medico_id, data_prenotazione) VALUES ('$user_id', '$medico_id', '$data_prenotazione');";
+        $result = mysqli_query ($conn, $query_insert) or die ("Query fallita " . mysqli_error($conn));
+        if ($result) {
+            $prenotazione_successo = true; // settiamo che la prenotazione è andata a buon fine
+        } else {
+            die("Errore durante l'inserimento: " . mysqli_error($conn));
+        }
+
+    } else {
+        if (empty($error_user_not_found) && empty($error_medico_not_found)) {
+            $error = "Compila tutti i campi obbligatori!";
+        }
+    }
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -11,6 +65,19 @@ include 'config.php';
     <link rel="stylesheet" href="./style.css">
 </head>
 <body>
+
+   <!-- pop up se medico o utente sbagliati -->
+   <?php if (!empty($error_user_not_found) || !empty($error_medico_not_found)): ?>
+    <script>
+        alert("<?php 
+            if (!empty($error_user_not_found)) echo addslashes($error_user_not_found);
+            if (!empty($error_user_not_found) && !empty($error_medico_not_found)) echo '\\n';
+            if (!empty($error_medico_not_found)) echo addslashes($error_medico_not_found);
+        ?>");
+    </script>
+    <?php endif; ?>
+
+
     <header>
         <nav>
             <ul>
@@ -49,22 +116,33 @@ include 'config.php';
     </div>
 
     <div class="container">
-        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">  
-            E-mail: <input type="text" name="email" value="<?php echo $email;?>">
-            <span class="error">* <?php echo $emailErr;?></span>
-            <br><br>
-            Medico: <input type="text" name="website" value="<?php echo $website;?>">
-            <span class="error"><?php echo $websiteErr;?></span>
-            <br><br>
-            Commento: <textarea name="comment" rows="5" cols="40"><?php echo $comment;?></textarea>
-            <br><br>
-            <br><br>
-            Data Appuntamento:
-            <input type="date" name="data_appuntamento" value="<?php echo $data_appuntamento;?>">
-            <span class="error">* <?php echo $dataAppuntamentoErr;?></span>
-            <br><br>
-            <input type="submit" name="submit" value="Submit">  
+        <h2>Prenota il tuo appuntamento</h2>
+
+        
+
+        <?php if ($prenotazione_successo): ?>
+            <div class="success-message">
+                <h3>Prenotazione effettuata con successo!</h3>
+                <p>Ti abbiamo riservato il tuo appuntamento.</p>
+            </div>
+        <?php else: ?>
+
+        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">  
+            <label for="email">E-mail:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="medico">Medico:</label>
+            <input type="text" id="medico" name="medico" required>
+
+            <!--<label for="comment">Commento:</label>
+            <textarea id="commento" name="commento" rows="5" cols="40"></textarea> -->
+
+            <label for="data_prenotazione">Data Appuntamento:</label>
+            <input type="date" id="data_prenotazione" name="data_prenotazione" required>
+
+            <button type="submit">Prenota</button>
         </form>
+        <?php endif; ?>
     </div>
 
     <footer>

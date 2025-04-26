@@ -1,6 +1,6 @@
 <?php
 include 'config.php';
-session_start();
+session_start(); //cosi che carica i dati della sessione e quindi se l utente è loggato mostra "Ciao, nome utente"
 ?>
 
 <!DOCTYPE html>
@@ -47,13 +47,13 @@ session_start();
         <ul>
 
             <?php
-            // var_dump($_SESSION);
+            //var_dump($_SESSION);
             echo "<h5> Benvenuto , " . $_SESSION['user_name'] . " " . $_SESSION['user_surname'] . "</h5>";
-            echo "<h5> La tua email: " . $_SESSION['user_email'] . "</h5>";
-            echo "<h5> Il tuo numero di telefono: " . $_SESSION['user_telefono'] . "</h5>";
+            echo "<h6> La tua email: " . $_SESSION['user_email'] . "</h6>";
+            echo "<h6> Il tuo numero di telefono: " . $_SESSION['user_telefono'] . "</h6>";
             ?>
-            <h5>"Le tue visite programmate : "</h5>
-            <h5>"Storico delle tue visite : "</h5>
+            <h6>"Le tue visite programmate : "</h6>
+            <h6>"Storico delle tue visite : "</h6>
         </ul>
     </div>
 
