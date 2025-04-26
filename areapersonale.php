@@ -48,7 +48,7 @@ session_start(); //cosi che carica i dati della sessione e quindi se l utente è
 
             <?php
             //var_dump($_SESSION);
-            echo "<h5> Benvenuto , " . $_SESSION['user_name'] . " " . $_SESSION['user_surname'] . "</h5>";
+            echo "<h5> Benvenuto, " . $_SESSION['user_name'] . " " . $_SESSION['user_surname'] . "</h5>";
             echo "<h6> La tua email: " . $_SESSION['user_email'] . "</h6>";
             echo "<h6> Il tuo numero di telefono: " . $_SESSION['user_telefono'] . "</h6>";
             ?>
