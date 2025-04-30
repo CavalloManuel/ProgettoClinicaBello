@@ -43,12 +43,20 @@ session_start();
     
     <div class="container">
     <h2>I Nostri Medici</h2>
-        <form method="POST" action="medici.php">
-            <select name="specializzazione" id="subject" required>
-                <option value="" selected disabled>Scegli la specializzazione</option>
-                <option value="Cardiologo">Cardiologo</option>
-                <option value="Dermatologo">Dermatologo</option>
-                <option value="Ortopedico">Ortopedico</option>
+                <?php
+                    $query = "SELECT specializzazione FROM medici group by specializzazione";
+                    $pip = mysqli_query($conn, $query) or
+                    die ("Query fallita " . mysqli_error($conn) . " " . mysqli_errno($conn));
+                ?>
+            
+            <form method="POST" action="medici.php">
+            <select name="specializzazione" id="subject" required>    
+            <option value="" selected disabled>Scegli la specializzazione</option>
+            <?php
+                while ($row = $pip->fetch_assoc()) {  
+                    echo "<option value='". $row['specializzazione'] ."'>". $row['specializzazione']."</option>";
+                    }
+            ?>
             </select>
             <input type="submit" value="Invia">
             <br>

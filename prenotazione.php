@@ -1,7 +1,6 @@
 <?php
 include 'config.php';
 session_start();
-
 $email = $medico = $data_appuntamento = "";
 
 $prenotazione_successo = false; // di default non è successo niente
@@ -128,15 +127,45 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
         <?php else: ?>
 
-        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">  
+        <form method="post" action="<?php echo ($_SERVER["PHP_SELF"]); ?>">  
             <label for="email">E-mail:</label>
             <input type="email" id="email" name="email" required>
 
             <label for="medico">Medico:</label>
-            <input type="text" id="medico" name="medico" required>
+            <select name="specializzazione" id="subject" required onchange="caricaMedici(this.value)">    <!-- required onchange serve a mettere obbligatorio un campo e onchange è l'evento usato -->
+            <option value="" selected disabled>Scegli la specializzazione</option>
+            <?php
+                $query = "SELECT specializzazione FROM medici group by specializzazione";
+                $pip = mysqli_query($conn, $query) or
+                die ("Query fallita " . mysqli_error($conn) . " " . mysqli_errno($conn));
 
-            <!--<label for="comment">Commento:</label>
-            <textarea id="commento" name="commento" rows="5" cols="40"></textarea> -->
+
+                while ($row = $pip->fetch_assoc()) {  
+                    echo "<option value='". $row['specializzazione'] ."'>". $row['specializzazione'] ."</option>";
+                }
+
+            ?>
+            </select>
+
+            <div id="medici-lista"></div>
+
+            <script>
+                function caricaMedici(specializzazione) {
+                fetch("medici_per_specializzazione.php", {     // manda richiesta http all'altra pagina con il metodo POST
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"     //dichiara il tipo di dato che gli mando
+                    },
+                    body: "specializzazione=" + specializzazione            //gli mando la specializzazione che l'utente ha messo
+                })
+                .then(response => response.text())                  //dico di trasformare quello che ricevo in testo
+                .then(data => {
+                    document.getElementById("medici-lista").innerHTML = data; //mette la risposta nel div medici lista
+                });
+            }
+            </script>
+
+
 
             <label for="data_prenotazione">Data Appuntamento:</label>
             <input type="date" id="data_prenotazione" name="data_prenotazione" required>
