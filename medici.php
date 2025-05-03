@@ -42,7 +42,7 @@ session_start();
     </header>
     
     <div class="container">
-    <h2>I Nostri Medici</h2>
+        <h2>I Nostri Medici</h2>
                 <?php
                     $query = "SELECT specializzazione FROM medici group by specializzazione";
                     $pip = mysqli_query($conn, $query) or
@@ -50,7 +50,8 @@ session_start();
                 ?>
             
             <form method="POST" action="medici.php">
-            <select name="specializzazione" id="subject" required>    
+                
+            <select name="specializzazione" id="subject" required onchange="listaMedici(this.value)">    
             <option value="" selected disabled>Scegli la specializzazione</option>
             <?php
                 while ($row = $pip->fetch_assoc()) {  
@@ -58,37 +59,24 @@ session_start();
                     }
             ?>
             </select>
-            <input type="submit" value="Invia">
             <br>
-        </form>
-
-      
-      
-
-            <?php 
-            //controllo per non dare come input "seleziona la specializzazione" quando avvio la pagina
-            if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['specializzazione']) && $_POST['specializzazione'] !== "Scegli la specializzazione") {
- 
-                $query = "SELECT nome From medici where specializzazione = '" . $_POST["specializzazione"] ."';";
-
-                $result = mysqli_query ($conn, $query) or
-                die ("Query fallita " . mysqli_error($conn) . " " . mysqli_errno($conn));
-
-                
-                echo "<ul>";
-                    while ($row = $result->fetch_assoc()) {  
-                    echo "<li>Nome: ".$row['nome']."</li>";
-                    echo "<br>";
-                    
-                    
-                    }
-                echo "</ul>";
-                
-
-                }
-            ?>
-            
-
+            <div id="lista"></div>
+            <script>
+                function listaMedici(specializzazione) {
+                fetch("listamedici_per_specializzazione.php", {     // manda richiesta http all'altra pagina con il metodo POST
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"     //dichiara il tipo di dato che gli mando
+                    },
+                    body: "specializzazione=" + specializzazione            //gli mando la specializzazione che l'utente ha messo
+                })
+                .then(response => response.text())                  //dico di trasformare quello che ricevo in testo
+                .then(data => {
+                    document.getElementById("lista").innerHTML = data; //mette la risposta nel div lista
+                });
+            }
+            </script>
+        </form>        
     </div>
 
 
