@@ -101,3 +101,71 @@ tr:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
+
+
+.visite-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.btn-mostra {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease;
+}
+
+.btn-mostra:hover {
+    background-color: #2980b9;
+}
+
+#visiteContainer {
+    margin-top: 15px;
+    transition: all 0.3s ease;
+}
+
+
+
+/* Stile per i pulsanti nella tabella */
+.btn-modifica {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease;
+}
+
+.btn-elimina {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease;
+}
+
+.btn-modifica:hover {
+    background-color: #2980b9;
+    transform: translateY(-1px);
+}
+
+.btn-elimina:hover {
+    background-color: #c0392b;
+    transform: translateY(-1px);
+}
+
+table th:nth-child(3), table th:nth-child(4) {
+    width: 120px;
+}

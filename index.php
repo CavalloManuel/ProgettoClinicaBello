@@ -146,7 +146,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </div>
 </div>
 
-<div class="banner2">
+<!-- <div class="banner2">
     
     <h3>Prenota adesso:</h3>
     <form method="POST" action="index.php">
@@ -155,6 +155,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
     </form>
 </div>
+                -->
 <footer>
         <p>&copy; 2025 Clinica. Tutti i diritti riservati.</p>
 </footer>

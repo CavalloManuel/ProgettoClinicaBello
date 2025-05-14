@@ -1,0 +1,77 @@
+/* Stile del select principale */
+#subject {
+    width: 100%;
+    padding: 12px 15px;
+    font-size: 1rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    background-color: #fff;
+    color: #333;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.3s ease;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233498db' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 15px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+#subject:hover {
+    border-color: #3498db;
+    box-shadow: 0 2px 15px rgba(52, 152, 219, 0.2);
+}
+
+#subject:focus {
+    border-color: #2980b9;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+}
+
+/* Stile delle option */
+#subject option {
+    padding: 12px 15px;
+    font-size: 0.95rem;
+    color: #333;
+    background: #fff;
+    transition: all 0.2s ease;
+}
+
+#subject option:hover {
+    background-color: #3498db !important;
+    color: white;
+}
+
+#subject option:checked {
+    background-color: #f1f9fe;
+    font-weight: 500;
+    color: #3498db;
+}
+
+/* Stile per l'option disabilitata (placeholder) */
+#subject option[value=""][disabled] {
+    color: #95a5a6;
+    font-style: italic;
+}
+
+/* Stile per il dropdown (funziona solo in alcuni browser) */
+@supports (-moz-appearance:none) {
+    #subject option {
+        background-color: white;
+    }
+    
+    #subject option:hover {
+        background-color: #3498db;
+        color: white;
+    }
+}
+
+/* Animazione al cambio selezione */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+#subject {
+    animation: fadeIn 1s ease;
+}

@@ -83,7 +83,7 @@ input, select {
 
 button {
     padding: 10px;
-    background-color: #28a745;
+    background-color: #3498db;
     color: white;
     border: none;
     border-radius: 5px;
@@ -92,13 +92,13 @@ button {
 }
 
 button:hover {
-    background-color: #218838;
+    background-color: #3498db;
 }
 
 .success-message {
     text-align: center;
     font-size: 1.2em;
-    color: green;
+    color: #3498db;
     margin-top: 20px;
 }
 
@@ -202,7 +202,7 @@ footer {
 }
 
  button:hover {
-    background-color: #58af4c;
+    background-color: #388cc4;
   }
 
 h3{
@@ -215,3 +215,5 @@ th{
 td{
     margin: 30px;
 }
+
+

@@ -53,38 +53,60 @@ session_start(); //cosi che carica i dati della sessione e quindi se l utente è
             echo "<h6> Il tuo numero di telefono: " . $_SESSION['user_telefono'] . "</h6>";
 
 
+            $query = "SELECT prenotazioni.id as prenotazione_id, medici.nome, data_prenotazione
+            FROM prenotazioni 
+            JOIN medici ON medici.id = prenotazioni.medico_id
+            WHERE prenotazioni.user_id = " . $_SESSION['user_id'];
 
-
-            $query = " SELECT medici.nome, data_prenotazione
-                       FROM prenotazioni 
-                       JOIN medici ON medici.id = prenotazioni.medico_id
-                       JOIN users ON users.id = prenotazioni.user_id
-                       AND users.id = " . $_SESSION['user_id'] . "   
-                     ";
             $pip = mysqli_query($conn, $query) or
             die ("Query fallita " . mysqli_error($conn) . " " . mysqli_errno($conn));
 
                         
-                    echo "<h6>Le tue visite programmate  </h6>";
-                    if(mysqli_num_rows($pip) == 0 ){ 
-                        echo "<h6> Nessuna visita programmata </h6>";
-                    }
-                    else{
+                    echo '<div class="visite-header">';
+                    echo '<h6>Le tue visite programmate</h6>';
+                    echo '<button id="mostraVisite" class="btn-mostra">Mostra</button>';
+                    echo '</div>';
+
+                    echo '<div id="visiteContainer" style="display:none;">';
+                    if(mysqli_num_rows($pip) == 0) { 
+                        echo "<h6>Nessuna visita programmata</h6>";
+                    } else {
+
                         echo "<table>";
                         echo "<tr>";
                         echo "<th>MEDICO</th>";
                         echo "<th>GIORNO</th>";
+                        echo "<th></th>";
+                        echo "<th></th>";
                         echo "</tr>";
                         while ($row = $pip->fetch_assoc()) {  
                             echo "<tr>";
                             echo "<td>". $row['nome'] ."</td>";
                             echo "<td>". $row['data_prenotazione'] ."</td>";
+                            //  pulsante Modifica
+                            echo "<td><button class='btn-modifica' onclick='modificaVisita(".$row['prenotazione_id'].")'>Modifica</button></td>";
+                            //  pulsante Elimina
+                            echo "<td><button class='btn-elimina' onclick='eliminaVisita(".$row['prenotazione_id'].")'>Elimina</button></td>";
                             echo "</tr>";
                         }
                         echo "</table>";
-                    }
 
-            ?>
+                    }
+                    echo '</div>';
+                    ?>
+                    <script>
+                    document.getElementById("mostraVisite").addEventListener("click", function() { //cerca l'elemento button e se cliccato esegue la funzione
+                        var container = document.getElementById("visiteContainer");
+                        if(container.style.display === "none") { //verifica se il contenuto è nascosto  -- se è nascosto lo mostra e il pulsante per non mostrare più diventerà nascondi
+                            container.style.display = "block";
+                            this.textContent = "Nascondi";
+                        } else {
+                            container.style.display = "none";
+                            this.textContent = "Mostra";
+                        }
+                    });
+                    </script>;
+            
 
 
             
