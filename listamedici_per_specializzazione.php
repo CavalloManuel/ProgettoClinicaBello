@@ -7,6 +7,7 @@ include 'config.php';
     echo "<ul>";
     while ($row = mysqli_fetch_assoc($result)) {
         echo "<li>". $row['nome']."</li>";
+        echo"<br>";
     }
     echo "</ul>";
 ?>

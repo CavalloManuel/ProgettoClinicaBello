@@ -122,7 +122,6 @@ if (isset($_POST['register'])) {
             <ul>
                 <li><a href="index.php">Home</a></li>
                 <li><a href="medici.php">I Nostri Medici</a></li>
-                <li><a href="services.php">Servizi</a></li>
                 <li><a href="contact.php">Contatti</a></li>
                 <li><a href="index.php" style="float: right;">← Torna alla Home</a></li>
             </ul>

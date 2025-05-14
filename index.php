@@ -42,7 +42,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <ul>
                 <li><a href="index.php">Home</a></li>
                 <li><a href="medici.php">I Nostri Medici</a></li>
-                <li><a href="services.php">Servizi</a></li>
                 <li><a href="contact.php">Contatti</a></li>
                 
                 <?php if(isset($_SESSION['user_id'])): ?>
@@ -148,6 +147,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </div>
 
 <div class="banner2">
+    
     <h3>Prenota adesso:</h3>
     <form method="POST" action="index.php">
         <div class="form-group">

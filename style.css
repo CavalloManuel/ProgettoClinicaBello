@@ -204,3 +204,14 @@ footer {
  button:hover {
     background-color: #58af4c;
   }
+
+h3{
+    padding: 20px;
+}
+
+th{
+    margin: 30px;
+}
+td{
+    margin: 30px;
+}
