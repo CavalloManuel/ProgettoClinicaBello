@@ -9,20 +9,20 @@ $error_medico_not_found = "";
 
 // Quando il form viene inviato
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $email = trim($_POST['email']); //trimserve pernon salvare gli spazi nel database
+    $password = trim($_POST['password']); //trimserve pernon salvare gli spazi nel database
     $medico = trim($_POST['medico']);
     //$commento = trim($_POST['commento']);
     $data_prenotazione = trim($_POST['data_prenotazione']);
 
 
-// 1. Trova l'ID dell'utente in base all'email    
-    $query_user = "SELECT id FROM users WHERE email = '" . $_POST["email"] ."';"; 
+// 1. Trova l'ID dell'utente in base alla password    
+    $query_user = "SELECT id FROM users WHERE password = '" . $_POST["password"] . "' AND users.id = " . $_SESSION['user_id'] ." ;"; 
     $result_user = mysqli_query($conn, $query_user) or die("Query fallita: " . mysqli_error($conn));
     if (mysqli_num_rows($result_user) > 0) {
         $user = mysqli_fetch_assoc($result_user);
         $user_id = $user['id'];
     } else {
-        $error_user_not_found = "Errore: Utente non trovato.";
+        $error_user_not_found = "Errore: Password errata.";
     }
 
 
@@ -38,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
 // 3. Inserisci nella tabella prenotazioni
-    if (empty($error_user_not_found) && empty($error_medico_not_found) && !empty($email) && !empty($medico) && !empty($data_prenotazione)) {
+    if (empty($error_user_not_found) && empty($error_medico_not_found) && !empty($password) && !empty($medico) && !empty($data_prenotazione)) {
         $query_insert = "INSERT INTO prenotazioni (user_id, medico_id, data_prenotazione) VALUES ('$user_id', '$medico_id', '$data_prenotazione');";
         $result = mysqli_query ($conn, $query_insert) or die ("Query fallita " . mysqli_error($conn));
         if ($result) {
@@ -63,6 +63,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prenotazione Appuntamento - Clinica</title>
     <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./style-medici.css">
 </head>
 <body>
 
@@ -127,10 +128,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <?php else: ?>
 
         <form method="post" action="<?php echo ($_SERVER["PHP_SELF"]); ?>">  
-            <label for="email">E-mail:</label>
-            <input type="email" id="email" name="email" required>
+            <label for="password ">Password:</label>
+            <input type="password" id="password" name="password" required>
 
-            <label for="medico">Medico:</label>
+            <label for="medico ">Medico:</label>
             <select name="specializzazione" id="subject" required onchange="caricaMedici(this.value)">    <!-- required onchange serve a mettere obbligatorio un campo e onchange è l'evento usato -->
             <option value="" selected disabled>Scegli la specializzazione</option>
             <?php
@@ -174,8 +175,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <?php endif; ?>
     </div>
 
-    <footer>
-        <p>&copy; 2025 Clinica. Tutti i diritti riservati.</p>
-    </footer>
 </body>
 </html>

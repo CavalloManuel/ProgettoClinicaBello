@@ -125,8 +125,6 @@ if (isset($_POST['login'])) {
         </div>
     </div>
 
-    <footer>
-        <p>&copy; 2025 Clinica. Tutti i diritti riservati.</p>
-    </footer>
+
 </body>
 </html>

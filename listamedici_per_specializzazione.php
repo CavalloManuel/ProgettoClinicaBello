@@ -2,15 +2,18 @@
 <?php
 include 'config.php';
 $specializzazione = $_POST['specializzazione'];
-
-$query = "SELECT nome FROM medici WHERE specializzazione = '$specializzazione' ORDER BY nome";
+if($specializzazione == "tutti"){
+    $query = "SELECT nome, specializzazione FROM medici ORDER BY nome";
+} else{
+    $query = "SELECT nome, specializzazione FROM medici WHERE specializzazione = '$specializzazione' ORDER BY nome";
+}
 $result = mysqli_query($conn, $query);
 
 echo '<div class="medici-lista">';
 while ($row = mysqli_fetch_assoc($result)) {
     echo '<div class="medico-item">';
-    echo '  <span class="medico-nome">'.htmlspecialchars($row['nome']).'</span>';
-    echo '  <span class="medico-specializzazione">'.htmlspecialchars($specializzazione).'</span>';
+    echo '<span class="medico-nome">'.htmlspecialchars($row['nome']).'</span>';
+    echo '<span class="medico-specializzazione">'.htmlspecialchars($row['specializzazione']).'</span>';
     echo '</div>';
 }
 echo '</div>';

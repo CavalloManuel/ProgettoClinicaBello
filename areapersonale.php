@@ -105,7 +105,7 @@ session_start(); //cosi che carica i dati della sessione e quindi se l utente è
                             this.textContent = "Mostra";
                         }
                     });
-                    </script>;
+                    </script>
             
 
 

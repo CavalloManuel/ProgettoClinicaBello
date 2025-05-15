@@ -1,8 +1,7 @@
 -- Crea il database
 CREATE DATABASE IF NOT EXISTS clinica;
 USE clinica;
-DROP TABLE users;
-DROP TABLE appuntamenti;
+DROP TABLE medici;
 
 -- Crea la tabella users
 CREATE TABLE users (
@@ -22,11 +21,11 @@ CREATE TABLE medici (
 );
 
 -- Crea la tabella appuntamenti
-CREATE TABLE appuntamenti (
+CREATE TABLE prenotazioni (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     medico_id INT NOT NULL,
-    data_appuntamento DATE NOT NULL,
+    data_prenotazione DATE NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (medico_id) REFERENCES medici(id) ON DELETE CASCADE
 );
@@ -40,11 +39,12 @@ INSERT INTO users (name, surname, email, telefono, password) VALUES
 -- Popola la tabella medici
 INSERT INTO medici (nome, specializzazione) VALUES
 ('Dr. Giovanni Smith', 'Cardiologo'),
+('Dr. Lapo Giustini', 'Cardiologo'),
 ('Dr. Laura Bellini', 'Dermatologo'),
 ('Dr. Marco De Luca', 'Ortopedico');
 
 -- Popola la tabella appuntamenti
-INSERT INTO appuntamenti (user_id, medico_id, data_appuntamento) VALUES
+INSERT INTO prenotazioni (user_id, medico_id, data_prenotazione) VALUES
 (1, 2, '2025-04-10'),
 (2, 1, '2025-04-12'),
 (3, 3, '2025-04-15');
