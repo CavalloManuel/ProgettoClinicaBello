@@ -1,10 +1,11 @@
-:root {
+        :root {
             --primary: #0066cc;
             --secondary: #004d99;
             --accent: #ff6b6b;
             --light: #f8f9fa;
             --dark: #212529;
             --gray: #6c757d;
+            --success: #28a745;
         }
         
         * {
@@ -104,7 +105,7 @@
             color: white;
             text-align: center;
             padding: 5rem 1rem;
-            margin-bottom: 3rem;
+            margin-bottom: 2rem;
         }
         
         .banner h1 {
@@ -114,41 +115,20 @@
         
         .banner p {
             font-size: 1.2rem;
-            margin-bottom: 2rem;
             max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        
-        button {
-            background: white;
-            color: var(--primary);
-            border: none;
-            padding: 1rem 2rem;
-            border-radius: 50px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-        
-        button:hover {
-            background: var(--accent);
-            color: white;
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            margin: 0 auto 2rem;
         }
         
         .container {
-            max-width: 1200px;
-            margin: 0 auto;
+            max-width: 800px;
+            margin: 0 auto 3rem;
             padding: 0 1rem;
         }
         
         h2 {
+            text-align: center;
             color: var(--primary);
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
             font-size: 2rem;
             position: relative;
             padding-bottom: 0.5rem;
@@ -158,74 +138,90 @@
             content: '';
             position: absolute;
             bottom: 0;
-            left: 0;
-            width: 60px;
-            height: 3px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
             background: var(--accent);
+            border-radius: 2px;
         }
         
-        .row {
-            display: flex;
-            flex-wrap: wrap;
-            margin: 3rem 0;
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
         }
         
-        .col-md-6 {
-            flex: 0 0 50%;
-            max-width: 50%;
-            padding: 0 15px;
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark);
         }
         
-        .img-clinica {
-            max-height: 400px;
-            object-fit: cover;
-            transition: transform 0.3s;
+        input, select {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: border 0.3s, box-shadow 0.3s;
         }
         
-        .img-clinica:hover {
-            transform: scale(1.02);
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
         }
         
-        ul {
-            list-style: none;
-            margin: 1.5rem 0;
+        #medici-lista {
+            margin-bottom: 1.5rem;
         }
         
-        ul li {
-            margin-bottom: 0.8rem;
-            position: relative;
-            padding-left: 1.5rem;
-        }
-        
-        ul li::before {
-            content: '\f00c';
-            font-family: 'Font Awesome 6 Free';
-            font-weight: 900;
+        .error-message {
             color: var(--accent);
-            position: absolute;
-            left: 0;
-        }
-        
-        .paragrafo-piccolo {
+            margin: -1rem 0 1.5rem;
             font-size: 0.9rem;
-            color: var(--gray);
         }
         
-        footer {
-            background: var(--dark);
+        button {
+            background: var(--primary);
             color: white;
+            border: none;
+            padding: 1rem 1.5rem;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+            width: 100%;
+        }
+        
+        button:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+        }
+        
+        .success-message {
             text-align: center;
-            padding: 2rem 0;
-            margin-top: 3rem;
+            background: rgba(40, 167, 69, 0.1);
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(40, 167, 69, 0.3);
+        }
+        
+        .success-message h3 {
+            color: var(--success);
+            margin-bottom: 0.5rem;
         }
         
         @media (max-width: 768px) {
-            .col-md-6 {
-                flex: 0 0 100%;
-                max-width: 100%;
-                margin-bottom: 2rem;
-            }
-            
             nav ul {
                 flex-wrap: wrap;
             }
@@ -240,5 +236,9 @@
             
             .banner h1 {
                 font-size: 2rem;
+            }
+            
+            form {
+                padding: 1.5rem;
             }
         }

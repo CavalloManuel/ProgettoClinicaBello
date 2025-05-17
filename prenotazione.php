@@ -3,19 +3,21 @@ include 'config.php';
 session_start();
 $email = $medico = $data_appuntamento = "";
 
-$prenotazione_successo = false; // di default non è successo niente
+$prenotazione_successo = false;
 $error_user_not_found = "";
 $error_medico_not_found = "";
+$error_data_non_valida = "";
 
-// Quando il form viene inviato
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $password = trim($_POST['password']); //trimserve pernon salvare gli spazi nel database
+    $password = trim($_POST['password']);
     $medico = trim($_POST['medico']);
-    //$commento = trim($_POST['commento']);
     $data_prenotazione = trim($_POST['data_prenotazione']);
+    
+    $today = date('Y-m-d');
+    if ($data_prenotazione < $today) {
+        $error_data_non_valida = "Errore: La data dell'appuntamento non può essere precedente a oggi.";
+    }
 
-
-// 1. Trova l'ID dell'utente in base alla password    
     $query_user = "SELECT id FROM users WHERE password = '" . $_POST["password"] . "' AND users.id = " . $_SESSION['user_id'] ." ;"; 
     $result_user = mysqli_query($conn, $query_user) or die("Query fallita: " . mysqli_error($conn));
     if (mysqli_num_rows($result_user) > 0) {
@@ -25,35 +27,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $error_user_not_found = "Errore: Password errata.";
     }
 
-
-// 2. Trova l'ID del medico in base al nome
     $query_medico = "SELECT id FROM medici WHERE nome = '" . $_POST["medico"] . "';";
     $result_medico = mysqli_query($conn, $query_medico) or die("Query fallita: " . mysqli_error($conn));
 
-    if (mysqli_num_rows($result_medico) > 0) { // vuol dire che essendoci piu di una riga la query ha trovato un medico
-        $medico = mysqli_fetch_assoc($result_medico); //trasforma la prima riga in array associativo
-        $medico_id = $medico['id']; // prende solo l'ID e lo salva in $medico_id
+    if (mysqli_num_rows($result_medico) > 0) {
+        $medico = mysqli_fetch_assoc($result_medico);
+        $medico_id = $medico['id'];
     } else {
         $error_medico_not_found = "Errore: Medico non trovato.";
     }
 
-// 3. Inserisci nella tabella prenotazioni
-    if (empty($error_user_not_found) && empty($error_medico_not_found) && !empty($password) && !empty($medico) && !empty($data_prenotazione)) {
+    if (empty($error_user_not_found) && empty($error_medico_not_found) && empty($error_data_non_valida) && !empty($password) && !empty($medico) && !empty($data_prenotazione)) {
         $query_insert = "INSERT INTO prenotazioni (user_id, medico_id, data_prenotazione) VALUES ('$user_id', '$medico_id', '$data_prenotazione');";
         $result = mysqli_query ($conn, $query_insert) or die ("Query fallita " . mysqli_error($conn));
         if ($result) {
-            $prenotazione_successo = true; // settiamo che la prenotazione è andata a buon fine
+            $prenotazione_successo = true;
         } else {
             die("Errore durante l'inserimento: " . mysqli_error($conn));
         }
-
     } else {
-        if (empty($error_user_not_found) && empty($error_medico_not_found)) {
+        if (empty($error_user_not_found) && empty($error_medico_not_found) && empty($error_data_non_valida)) {
             $error = "Compila tutti i campi obbligatori!";
         }
     }
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -61,45 +58,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prenotazione Appuntamento - Clinica</title>
-    <link rel="stylesheet" href="./style.css">
-    <link rel="stylesheet" href="./style-medici.css">
+    <title>Prenotazione - Clinica Specializzata</title>
+    <link rel="stylesheet" href="./style-prenotazione.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+
+
 </head>
 <body>
-
-   <!-- pop up se medico o utente sbagliati -->
-   <?php if (!empty($error_user_not_found) || !empty($error_medico_not_found)): ?>
-    <script>
-        alert("<?php 
-            if (!empty($error_user_not_found)) echo addslashes($error_user_not_found);
-            if (!empty($error_user_not_found) && !empty($error_medico_not_found)) echo '\\n';
-            if (!empty($error_medico_not_found)) echo addslashes($error_medico_not_found);
-        ?>");
-    </script>
-    <?php endif; ?>
-
-
     <header>
         <nav>
             <ul>
-                <li><a href="index.php">Home</a></li>
-                <li><a href="medici.php">I Nostri Medici</a></li>
-                <li><a href="contact.php">Contatti</a></li>
+                <li><a href="index.php"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="medici.php"><i class="fas fa-user-md"></i> I Nostri Medici</a></li>
+                <li><a href="contact.php"><i class="fas fa-envelope"></i> Contatti</a></li>
                 
                 <?php if(isset($_SESSION['user_id'])): ?>
                 <li class="auth-container">
-                    <span class="auth-toggle">Ciao, <?php echo htmlspecialchars($_SESSION['user_name']); ?> ▼</span>
+                    <span class="auth-toggle"><i class="fas fa-user-circle"></i> Ciao, <?php echo htmlspecialchars($_SESSION['user_name']); ?></span>
                     <div class="auth-dropdown">
-                        <a href="areapersonale.php">Area Personale</a>
-                        <a href="?logout=1">Esci</a>
+                        <a href="areapersonale.php"><i class="fas fa-user"></i> Area Personale</a>
+                        <a href="?logout=1"><i class="fas fa-sign-out-alt"></i> Esci</a>
                     </div>
                 </li>
                 <?php else: ?>
                 <li class="auth-container">
-                    <span class="auth-toggle">Accedi/Registrati ▼</span>
+                    <span class="auth-toggle"><i class="fas fa-user"></i> Accedi/Registrati</span>
                     <div class="auth-dropdown">
-                        <a href="login.php">Accedi</a>
-                        <a href="register.php">Registrati</a>
+                        <a href="login.php"><i class="fas fa-sign-in-alt"></i> Accedi</a>
+                        <a href="register.php"><i class="fas fa-user-plus"></i> Registrati</a>
                     </div>
                 </li>
                 <?php endif; ?>
@@ -110,70 +98,78 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div class="banner">
         <h1>Visite specialistiche e diagnostica</h1>
         <p>Un team di esperti medici è a tua disposizione.</p>
-        <br>
-        
-
     </div>
 
     <div class="container">
-        <h2>Prenota il tuo appuntamento</h2>
-
-        
+        <h2><i class="fas fa-calendar-plus"></i> Prenota il tuo appuntamento</h2>
 
         <?php if ($prenotazione_successo): ?>
             <div class="success-message">
-                <h3>Prenotazione effettuata con successo!</h3>
+                <h3><i class="fas fa-check-circle"></i> Prenotazione effettuata con successo!</h3>
                 <p>Ti abbiamo riservato il tuo appuntamento.</p>
             </div>
         <?php else: ?>
 
-        <form method="post" action="<?php echo ($_SERVER["PHP_SELF"]); ?>">  
-            <label for="password ">Password:</label>
-            <input type="password" id="password" name="password" required>
+        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">  
+            <label for="password"><i class="fas fa-lock"></i> Password:</label>
+            <input type="password" id="password" name="password" required placeholder="Inserisci la tua password">
 
-            <label for="medico ">Medico:</label>
-            <select name="specializzazione" id="subject" required onchange="caricaMedici(this.value)">    <!-- required onchange serve a mettere obbligatorio un campo e onchange è l'evento usato -->
-            <option value="" selected disabled>Scegli la specializzazione</option>
-            <?php
-                $query = "SELECT specializzazione FROM medici group by specializzazione";
-                $pip = mysqli_query($conn, $query) or
-                die ("Query fallita " . mysqli_error($conn) . " " . mysqli_errno($conn));
+            <label for="medico"><i class="fas fa-user-md"></i> Medico:</label>
+            <select name="specializzazione" id="subject" required onchange="caricaMedici(this.value)">
+                <option value="" selected disabled>Scegli la specializzazione</option>
+                <?php
+                    $query = "SELECT specializzazione FROM medici GROUP BY specializzazione";
+                    $pip = mysqli_query($conn, $query) or
+                    die ("Query fallita " . mysqli_error($conn) . " " . mysqli_errno($conn));
 
-
-                while ($row = $pip->fetch_assoc()) {  
-                    echo "<option value='". $row['specializzazione'] ."'>". $row['specializzazione'] ."</option>";
-                }
-
-            ?>
+                    while ($row = $pip->fetch_assoc()) {  
+                        echo "<option value='". htmlspecialchars($row['specializzazione']) ."'>". htmlspecialchars($row['specializzazione']) ."</option>";
+                    }
+                ?>
             </select>
 
             <div id="medici-lista"></div>
 
-            <script>
-                function caricaMedici(specializzazione) {
-                fetch("medici_per_specializzazione.php", {     // manda richiesta http all'altra pagina con il metodo POST
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/x-www-form-urlencoded"     //dichiara il tipo di dato che gli mando
-                    },
-                    body: "specializzazione=" + specializzazione            //gli mando la specializzazione che l'utente ha messo
-                })
-                .then(response => response.text())                  //dico di trasformare quello che ricevo in testo
-                .then(data => {
-                    document.getElementById("medici-lista").innerHTML = data; //mette la risposta nel div medici lista
-                });
-            }
-            </script>
-
-
-
-            <label for="data_prenotazione">Data Appuntamento:</label>
+            <label for="data_prenotazione"><i class="fas fa-calendar-day"></i> Data Appuntamento:</label>
             <input type="date" id="data_prenotazione" name="data_prenotazione" required>
+            <?php if (!empty($error_data_non_valida)): ?>
+                <div class="error-message"><i class="fas fa-exclamation-circle"></i> <?php echo htmlspecialchars($error_data_non_valida); ?></div>
+            <?php endif; ?>
 
-            <button type="submit">Prenota</button>
+            <button type="submit"><i class="fas fa-book-medical"></i> Prenota</button>
         </form>
         <?php endif; ?>
     </div>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('data_prenotazione').min = today;
+            
+            document.querySelector('form').addEventListener('submit', function(e) {
+                const selectedDate = document.getElementById('data_prenotazione').value;
+                if (selectedDate < today) {
+                    e.preventDefault();
+                    alert('La data dell\'appuntamento non può essere precedente a oggi.');
+                    document.getElementById('data_prenotazione').focus();
+                }
+            });
+        });
+
+        function caricaMedici(specializzazione) {
+            fetch("medici_per_specializzazione.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body: "specializzazione=" + encodeURIComponent(specializzazione)
+            })
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("medici-lista").innerHTML = data;
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
 </body>
 </html>

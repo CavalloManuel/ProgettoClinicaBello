@@ -63,73 +63,28 @@ if (isset($_POST['register'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registrazione - Clinica</title>
-    <link rel="stylesheet" href="./style.css">
+    <title>Registrazione - Clinica Specializzata</title>
+    <link rel="stylesheet" href="./style-register.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        .register-container {
-            max-width: 400px;
-            margin: 50px auto;
-            padding: 20px;
-            background: #f9f9f9;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        .register-container h2 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-        }
-        .form-group input {
-            width: 100%;
-            padding: 8px;
-            box-sizing: border-box;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        .error-message {
-            color: red;
-            margin-bottom: 15px;
-            text-align: center;
-        }
-        .login-link {
-            text-align: center;
-            margin-top: 15px;
-        }
-        button[type="submit"] {
-            width: 100%;
-            padding: 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        button[type="submit"]:hover {
-            background-color: #45a049;
-        }
+        
     </style>
 </head>
 <body>
     <header>
         <nav>
             <ul>
-                <li><a href="index.php">Home</a></li>
-                <li><a href="medici.php">I Nostri Medici</a></li>
-                <li><a href="contact.php">Contatti</a></li>
-                <li><a href="index.php" style="float: right;">← Torna alla Home</a></li>
+                <li><a href="index.php"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="medici.php"><i class="fas fa-user-md"></i> I Nostri Medici</a></li>
+                <li><a href="contact.php"><i class="fas fa-envelope"></i> Contatti</a></li>
+                <li><a href="index.php"><i class="fas fa-arrow-left"></i> Torna alla Home</a></li>
             </ul>
         </nav>
     </header>
 
     <div class="register-container">
-        <h2>Crea un nuovo account</h2>
+        <h2><i class="fas fa-user-plus"></i> Crea un nuovo account</h2>
         
         <?php if(!empty($error)): ?>
             <div class="error-message"><?php echo htmlspecialchars($error); ?></div>
@@ -137,44 +92,47 @@ if (isset($_POST['register'])) {
         
         <form method="POST" action="register.php">
             <div class="form-group">
-                <label>Nome :</label>
-                <input type="text" name="reg_name" required value="<?php echo isset($_POST['reg_name']) ? htmlspecialchars($_POST['reg_name']) : ''; ?>">
+                <label><i class="fas fa-user"></i> Nome:</label>
+                <input type="text" name="reg_name" required value="<?php echo isset($_POST['reg_name']) ? htmlspecialchars($_POST['reg_name']) : ''; ?>" placeholder="Inserisci il tuo nome">
             </div>
             
             <div class="form-group">
-                <label>Cognome :</label>
-                <input type="text" name="reg_surname" required value="<?php echo isset($_POST['reg_surname']) ? htmlspecialchars($_POST['reg_surname']) : ''; ?>">
+                <label><i class="fas fa-user"></i> Cognome:</label>
+                <input type="text" name="reg_surname" required value="<?php echo isset($_POST['reg_surname']) ? htmlspecialchars($_POST['reg_surname']) : ''; ?>" placeholder="Inserisci il tuo cognome">
             </div>
 
             <div class="form-group">
-                <label>Email:</label>
-                <input type="email" name="reg_email" required value="<?php echo isset($_POST['reg_email']) ? htmlspecialchars($_POST['reg_email']) : ''; ?>">
+                <label><i class="fas fa-envelope"></i> Email:</label>
+                <input type="email" name="reg_email" required value="<?php echo isset($_POST['reg_email']) ? htmlspecialchars($_POST['reg_email']) : ''; ?>" placeholder="esempio@email.com">
             </div>
             
             <div class="form-group">
-                <label>Numero di telefono:</label>
-                <input type="numero" name="reg_telefono" required length="10" required value="<?php echo isset($_POST['reg_telefono']) ? htmlspecialchars($_POST['reg_telefono']) : ''; ?>"> 
+                <label><i class="fas fa-phone"></i> Numero di telefono:</label>
+                <input type="tel" name="reg_telefono" required pattern="[0-9]{10}" value="<?php echo isset($_POST['reg_telefono']) ? htmlspecialchars($_POST['reg_telefono']) : ''; ?>" placeholder="Inserisci 10 cifre">
             </div>
 
             <div class="form-group">
-                <label>Password (min. 8 caratteri):</label>
-                <input type="password" name="reg_password" required minlength="8">
+                <label><i class="fas fa-lock"></i> Password (min. 8 caratteri):</label>
+                <input type="password" name="reg_password" required minlength="8" placeholder="Almeno 8 caratteri">
             </div>
             
             <div class="form-group">
-                <label>Conferma Password:</label>
-                <input type="password" name="confirm_password" required minlength="8">
+                <label><i class="fas fa-lock"></i> Conferma Password:</label>
+                <input type="password" name="confirm_password" required minlength="8" placeholder="Conferma la tua password">
             </div>
             
             <div class="form-group">
-                <button type="submit" name="register">Registrati</button>
+                <button type="submit" name="register"><i class="fas fa-user-plus"></i> Registrati</button>
             </div>
         </form>
         
         <div class="login-link">
-            Hai già un account? <a href="login.php">Accedi</a>
+            Hai già un account? <a href="login.php"><i class="fas fa-sign-in-alt"></i> Accedi</a>
         </div>
     </div>
 
+    <footer>
+        <p>&copy; 2025 Clinica. Tutti i diritti riservati.</p>
+    </footer>
 </body>
 </html>

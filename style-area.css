@@ -5,6 +5,8 @@
             --light: #f8f9fa;
             --dark: #212529;
             --gray: #6c757d;
+            --success: #28a745;
+            --danger: #dc3545;
         }
         
         * {
@@ -97,59 +99,19 @@
             background: #f8f9fa;
         }
         
-        .banner {
-            background: linear-gradient(rgba(0, 102, 204, 0.8), rgba(0, 77, 153, 0.8)), url('Images/img1.jpg');
-            background-size: cover;
-            background-position: center;
-            color: white;
-            text-align: center;
-            padding: 5rem 1rem;
-            margin-bottom: 3rem;
-        }
-        
-        .banner h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-        
-        .banner p {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        
-        button {
-            background: white;
-            color: var(--primary);
-            border: none;
-            padding: 1rem 2rem;
-            border-radius: 50px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-        
-        button:hover {
-            background: var(--accent);
-            color: white;
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-        }
-        
         .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 1rem;
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
         }
         
         h2 {
             color: var(--primary);
             margin-bottom: 1.5rem;
-            font-size: 2rem;
+            font-size: 1.8rem;
             position: relative;
             padding-bottom: 0.5rem;
         }
@@ -164,66 +126,111 @@
             background: var(--accent);
         }
         
-        .row {
-            display: flex;
-            flex-wrap: wrap;
-            margin: 3rem 0;
+        h5 {
+            color: var(--primary);
+            font-size: 1.3rem;
+            margin: 1.5rem 0 0.5rem;
         }
         
-        .col-md-6 {
-            flex: 0 0 50%;
-            max-width: 50%;
-            padding: 0 15px;
-        }
-        
-        .img-clinica {
-            max-height: 400px;
-            object-fit: cover;
-            transition: transform 0.3s;
-        }
-        
-        .img-clinica:hover {
-            transform: scale(1.02);
-        }
-        
-        ul {
-            list-style: none;
-            margin: 1.5rem 0;
-        }
-        
-        ul li {
-            margin-bottom: 0.8rem;
-            position: relative;
-            padding-left: 1.5rem;
-        }
-        
-        ul li::before {
-            content: '\f00c';
-            font-family: 'Font Awesome 6 Free';
-            font-weight: 900;
-            color: var(--accent);
-            position: absolute;
-            left: 0;
-        }
-        
-        .paragrafo-piccolo {
-            font-size: 0.9rem;
+        h6 {
             color: var(--gray);
+            font-size: 1rem;
+            margin: 0.5rem 0;
+            padding-left: 1rem;
+            border-left: 3px solid var(--primary);
         }
         
-        footer {
-            background: var(--dark);
+        .visite-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 2rem 0 1rem;
+        }
+        
+        .btn-mostra {
+            background: var(--primary);
             color: white;
-            text-align: center;
-            padding: 2rem 0;
-            margin-top: 3rem;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-mostra:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+        }
+        
+        #visiteContainer {
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 1.5rem 0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        th, td {
+            padding: 1rem;
+            text-align: left;
+        }
+        
+        th {
+            background-color: var(--primary);
+            color: white;
+            font-weight: 500;
+        }
+        
+        td {
+            background-color: white;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        tr:hover td {
+            background-color: #f8f9fa;
+        }
+        
+        tr:nth-child(even) td {
+            background-color: #f8f9fa;
+        }
+        
+        .btn-modifica {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-elimina {
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-modifica:hover, .btn-elimina:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
         
         @media (max-width: 768px) {
-            .col-md-6 {
-                flex: 0 0 100%;
-                max-width: 100%;
-                margin-bottom: 2rem;
+            .container {
+                padding: 1.5rem;
+                margin: 1rem;
             }
             
             nav ul {
@@ -234,11 +241,8 @@
                 margin: 0.5rem;
             }
             
-            .banner {
-                padding: 3rem 1rem;
-            }
-            
-            .banner h1 {
-                font-size: 2rem;
+            table {
+                display: block;
+                overflow-x: auto;
             }
         }

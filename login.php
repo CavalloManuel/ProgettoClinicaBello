@@ -47,58 +47,28 @@ if (isset($_POST['login'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Clinica</title>
-    <link rel="stylesheet" href="./style.css">
+    <title>Login - Clinica Specializzata</title>
+    <link rel="stylesheet" href="./style-login.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        .login-container {
-            max-width: 400px;
-            margin: 50px auto;
-            padding: 20px;
-            background: #f9f9f9;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        .login-container h2 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-        }
-        .form-group input {
-            width: 100%;
-            padding: 8px;
-            box-sizing: border-box;
-        }
-        .error-message {
-            color: red;
-            margin-bottom: 15px;
-            text-align: center;
-        }
-        .register-link {
-            text-align: center;
-            margin-top: 15px;
-        }
+        
     </style>
 </head>
 <body>
     <header>
         <nav>
             <ul>
-                <li><a href="index.php">Home</a></li>
-                <li><a href="medici.php">I Nostri Medici</a></li>
-                <li><a href="contact.php">Contatti</a></li>
-                <li><a href="index.php" style="float: right;">← Torna alla Home</a></li>
+                <li><a href="index.php"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="medici.php"><i class="fas fa-user-md"></i> I Nostri Medici</a></li>
+                <li><a href="contact.php"><i class="fas fa-envelope"></i> Contatti</a></li>
+                <li><a href="index.php"><i class="fas fa-arrow-left"></i> Torna alla Home</a></li>
             </ul>
         </nav>
     </header>
 
     <div class="login-container">
-        <h2>Accedi al tuo account</h2>
+        <h2><i class="fas fa-sign-in-alt"></i> Accedi al tuo account</h2>
         
         <?php if(!empty($error)): ?>
             <div class="error-message"><?php echo htmlspecialchars($error); ?></div>
@@ -106,25 +76,27 @@ if (isset($_POST['login'])) {
         
         <form method="POST" action="login.php">
             <div class="form-group">
-                <label>Email:</label>
-                <input type="email" name="user_email" required>
+                <label><i class="fas fa-envelope"></i> Email:</label>
+                <input type="email" name="user_email" required placeholder="Inserisci la tua email">
             </div>
             
             <div class="form-group">
-                <label>Password:</label>
-                <input type="password" name="user_password" required>
+                <label><i class="fas fa-lock"></i> Password:</label>
+                <input type="password" name="user_password" required placeholder="Inserisci la tua password">
             </div>
             
             <div class="form-group">
-                <button type="submit" name="login">Accedi</button>
+                <button type="submit" name="login"><i class="fas fa-sign-in-alt"></i> Accedi</button>
             </div>
         </form>
         
         <div class="register-link">
-            Non hai un account? <a href="register.php">Registrati</a>
+            Non hai un account? <a href="register.php"><i class="fas fa-user-plus"></i> Registrati</a>
         </div>
     </div>
 
-
+    <footer>
+        <p>&copy; 2025 Clinica. Tutti i diritti riservati.</p>
+    </footer>
 </body>
 </html>
