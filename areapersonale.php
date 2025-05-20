@@ -1,6 +1,11 @@
 <?php
 include 'config.php';
 session_start();
+if (isset($_GET['logout'])) {
+    session_destroy();
+    header("Location: index.php");
+    exit();
+}
 ?>
 
 <!DOCTYPE html>
@@ -79,8 +84,7 @@ session_start();
                 echo "<tr>";
                 echo "<td>". $row['nome'] ."</td>";
                 echo "<td>". $row['data_prenotazione'] ."</td>";
-                echo "<td><button class='btn-modifica' onclick='modificaVisita(".$row['prenotazione_id'].")'><i class='fas fa-edit'></i> Modifica</button></td>";
-                echo "<td><button class='btn-elimina' onclick='eliminaVisita(".$row['prenotazione_id'].")'><i class='fas fa-trash-alt'></i> Elimina</button></td>";
+                echo "<td><button class='btn-elimina' onclick='eliminaVisita(".$row['prenotazione_id'].", this)'>Elimina</button></td>";
                 echo "</tr>";
             }
             echo "</table>";
@@ -101,13 +105,11 @@ session_start();
         });
         
 
-    function eliminaVisita(id) {
-    if(confirm("Sei sicuro di voler eliminare questa prenotazione?")) {
-        // Mostra un indicatore di caricamento
-        const row = document.querySelector(`tr[data-id="${id}"]`);
-        if(row) row.style.opacity = '0.5';
-        
-        // Invia la richiesta AJAX
+    function eliminaVisita(id, btn) {
+    if (confirm("Sei sicuro di voler eliminare questa prenotazione?")) {
+        const row = btn.closest('tr'); // Trova il <tr> contenitore del bottone
+        row.style.display = 'none'; // Nasconde subito la riga
+
         fetch('elimina_prenotazione.php', {
             method: 'POST',
             headers: {
@@ -117,26 +119,27 @@ session_start();
         })
         .then(response => response.json())
         .then(data => {
-            if(data.success) {
-                // Rimuovi la riga dalla tabella senza ricaricare la pagina
-                if(row) row.remove();
-                
-                // Mostra un messaggio di successo
-                alert("Prenotazione eliminata con successo!");
-                
-                // Se non ci sono più righe, mostra "Nessuna visita programmata"
-                if(document.querySelectorAll('table tr').length <= 1) {
-                    document.querySelector('#visiteContainer').innerHTML = 
+            if (data.success) {
+                row.remove(); // Rimuove la riga definitivamente
+
+                // Se la tabella ha solo l'intestazione, mostra il messaggio
+                if (document.querySelectorAll('#visiteContainer table tr').length === 1) {
+                    document.querySelector('#visiteContainer').innerHTML =
                         "<h6><i class='fas fa-info-circle'></i> Nessuna visita programmata</h6>";
                 }
             } else {
-                // Ripristina la riga e mostra l'errore
-                if(row) row.style.opacity = '1';
+                // Se c'è un errore, ri-mostra la riga
+                row.style.display = '';
                 alert("Errore: " + data.message);
             }
+        })
+        .catch(error => {
+            row.style.display = '';
+            alert("Errore di rete: " + error.message);
         });
     }
 }
+
         
 
         </script>

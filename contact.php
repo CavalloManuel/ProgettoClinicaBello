@@ -2,6 +2,11 @@
 // Connessione al database
 include 'config.php';
 session_start();
+if (isset($_GET['logout'])) {
+    session_destroy();
+    header("Location: index.php");
+    exit();
+}
 ?>
 
 <!DOCTYPE html>

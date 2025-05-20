@@ -1,6 +1,11 @@
 <?php
 include 'config.php';
 session_start();
+if (isset($_GET['logout'])) {
+    session_destroy();
+    header("Location: index.php");
+    exit();
+}
 $email = $medico = $data_appuntamento = "";
 
 $prenotazione_successo = false;
@@ -24,7 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $user = mysqli_fetch_assoc($result_user);
         $user_id = $user['id'];
     } else {
-        $error_user_not_found = "Errore: Password errata.";
+        $error_data_non_valida = "Errore: Password errata.";
     }
 
     $query_medico = "SELECT id FROM medici WHERE nome = '" . $_POST["medico"] . "';";
@@ -37,14 +42,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $error_medico_not_found = "Errore: Medico non trovato.";
     }
 
+    if (!empty($error_medico_not_found)){
+        echo ($error_medico_not_found); 
+    } else {
+
+    }
+
     if (empty($error_user_not_found) && empty($error_medico_not_found) && empty($error_data_non_valida) && !empty($password) && !empty($medico) && !empty($data_prenotazione)) {
-        $query_insert = "INSERT INTO prenotazioni (user_id, medico_id, data_prenotazione) VALUES ('$user_id', '$medico_id', '$data_prenotazione');";
-        $result = mysqli_query ($conn, $query_insert) or die ("Query fallita " . mysqli_error($conn));
-        if ($result) {
-            $prenotazione_successo = true;
+        
+        // controllo che il medico non abbia già una prenotazione quel giorno
+        $controllo_query = "SELECT id FROM prenotazioni WHERE medico_id = $medico_id AND data_prenotazione = '$data_prenotazione'";
+        $controllo_result = mysqli_query($conn, $controllo_query) or die("Query fallita: " . mysqli_error($conn));
+
+        if (mysqli_num_rows($controllo_result) > 0) {
+            $error_data_non_valida = "Errore: Il medico ha già una prenotazione per questa data.";
         } else {
-            die("Errore durante l'inserimento: " . mysqli_error($conn));
+            $query_insert = "INSERT INTO prenotazioni (user_id, medico_id, data_prenotazione) VALUES ('$user_id', '$medico_id', '$data_prenotazione');";
+            $result = mysqli_query ($conn, $query_insert) or die ("Query fallita " . mysqli_error($conn));
+            if ($result) {
+                $prenotazione_successo = true;
+            } else {
+                die("Errore durante l'inserimento: " . mysqli_error($conn));
+            }
         }
+
     } else {
         if (empty($error_user_not_found) && empty($error_medico_not_found) && empty($error_data_non_valida)) {
             $error = "Compila tutti i campi obbligatori!";
@@ -52,6 +73,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="it">
