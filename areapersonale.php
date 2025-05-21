@@ -6,6 +6,18 @@ if (isset($_GET['logout'])) {
     header("Location: index.php");
     exit();
 }
+
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['medici_nome'])) {
+    $query = "INSERT INTO medici (nome, specializzazione) VALUES ('".$_POST["medici_nome"]."', '".$_POST["medici_specializzazione"]."')";
+    $pip = mysqli_query($conn, $query) or
+    die ("Query fallita " . mysqli_error($conn) . " " . mysqli_errno($conn));
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['elimina_nome'])) {
+    $query = "INSERT INTO medici (nome, specializzazione) VALUES ('".$_POST["medici_nome"]."', '".$_POST["medici_specializzazione"]."')";
+    $pip = mysqli_query($conn, $query) or
+    die ("Query fallita " . mysqli_error($conn) . " " . mysqli_errno($conn));
+}
 ?>
 
 <!DOCTYPE html>
@@ -20,6 +32,96 @@ if (isset($_GET['logout'])) {
 
 </head>
 <body>
+    
+<?php
+    if($_SESSION['user_id'] == 999){
+?>  
+
+<header>
+        <nav>
+            <ul>
+                <li><a href="index.php"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="medici.php"><i class="fas fa-user-md"></i> I Nostri Medici</a></li>
+                <li><a href="contact.php"><i class="fas fa-envelope"></i> Contatti</a></li>
+                
+                <?php if(isset($_SESSION['user_id'])): ?>
+                <li class="auth-container">
+                    <span class="auth-toggle"><i class="fas fa-user-circle"></i> Ciao, <?php echo htmlspecialchars($_SESSION['user_name']); ?></span>
+                    <div class="auth-dropdown">
+                        <a href="index.php?logout=1"><i class="fas fa-sign-out-alt"></i> Esci</a>
+                    </div>
+                </li>
+                <?php else: ?>
+                <li class="auth-container">
+                    <span class="auth-toggle"><i class="fas fa-user"></i> Accedi/Registrati</span>
+                    <div class="auth-dropdown">
+                        <a href="login.php"><i class="fas fa-sign-in-alt"></i> Accedi</a>
+                        <a href="register.php"><i class="fas fa-user-plus"></i> Registrati</a>
+                    </div>
+                </li>
+                <?php endif; ?>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h2><i class="fas fa-user"></i> Le tue informazioni</h2>
+        
+        <?php
+        echo "<h5><i class='fas fa-handshake'></i> Benvenuto, " . $_SESSION['user_name'] . " " . $_SESSION['user_surname'] . "</h5>";
+        echo "<h6><i class='fas fa-envelope'></i> La tua email: " . $_SESSION['user_email'] . "</h6>";
+        echo "<h6><i class='fas fa-phone'></i> Il tuo numero di telefono: " . $_SESSION['user_telefono'] . "</h6> ";
+        echo "<br> <br>";
+
+
+        $query = "SELECT prenotazioni.id as prenotazione_id, medici.nome, data_prenotazione
+                 FROM prenotazioni 
+                 JOIN medici ON medici.id = prenotazioni.medico_id
+                 WHERE prenotazioni.user_id = " . $_SESSION['user_id'];
+
+        $pip = mysqli_query($conn, $query) or
+        die ("Query fallita " . mysqli_error($conn) . " " . mysqli_errno($conn));
+        
+        ?>            
+        <h5> Inserisci medici</h5>
+        
+        <form method="POST" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
+        <label></i> Nome medico </label>
+        <input type="text" name="medici_nome" required placeholder="Inserisci nome medico"> <br>
+        <label></i> Specializzazione </label>
+        <input type="text"  name="medici_specializzazione" required placeholder="Inserisci specializzazione "> <br>
+        <button type="submit"><i class="fas fa-book-medical"></i> Inserisci</button>
+        </form>
+                    <br/><br/>
+
+        <h5> Elimina medici</h5>
+        <form method="POST" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
+        <label></i> Nome medico </label>
+        <input type="text"  name="elimina_nome" required placeholder="Elimina nome medico"> <br>
+        <label></i> Specializzazione </label>
+        <input type="text"  name="elimina_specializzazione" required placeholder="Elimina specializzazione "> <br>
+        <button type="submit"><i class="fas fa-book-medical"></i> Elimina</button>
+        </form>
+
+                     <br/><br/>
+
+        <h5> Elimina utente</h5>
+        <form method="POST" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
+        <label></i> Email utente </label>
+        <input type="text"  name="elimina_nome" required placeholder="email utente"> <br>
+        <button type="submit"><i class="fas fa-book-medical"></i> Elimina</button>
+        </form>
+
+
+        </div>
+        
+        
+        
+    </div>
+
+<?php
+    }else{
+?>
     <header>
         <nav>
             <ul>
@@ -138,11 +240,15 @@ if (isset($_GET['logout'])) {
             alert("Errore di rete: " + error.message);
         });
     }
-}
+    }
 
         
 
         </script>
     </div>
+
+<?php
+}
+?>
 </body>
 </html>
