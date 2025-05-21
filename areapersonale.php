@@ -7,16 +7,50 @@ if (isset($_GET['logout'])) {
     exit();
 }
 
+
+
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['medici_nome'])) {
+    
     $query = "INSERT INTO medici (nome, specializzazione) VALUES ('".$_POST["medici_nome"]."', '".$_POST["medici_specializzazione"]."')";
     $pip = mysqli_query($conn, $query) or
     die ("Query fallita " . mysqli_error($conn) . " " . mysqli_errno($conn));
+
+    echo "<script>alert('Medico inserito');</script>";
 }
 
+
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['elimina_nome'])) {
-    $query = "INSERT INTO medici (nome, specializzazione) VALUES ('".$_POST["medici_nome"]."', '".$_POST["medici_specializzazione"]."')";
+    $query_specializzazione = "SELECT id FROM medici WHERE nome = '" . $_POST["elimina_nome"] . "' AND specializzazione = '" . $_POST["elimina_specializzazione"] . "' " ;
+    $result_specializzazione = mysqli_query($conn, $query_specializzazione) or die("Query fallita: " . mysqli_error($conn));
+
+    if (mysqli_num_rows($result_specializzazione) > 0) {
+        $query = "DELETE FROM medici WHERE nome = '".$_POST['elimina_nome'] ."' AND specializzazione = '".$_POST['elimina_specializzazione'] ."' ";
+        $pip = mysqli_query($conn, $query) or
+        die ("Query fallita " . mysqli_error($conn) . " " . mysqli_errno($conn));
+
+        echo "<script>alert('Medico rimosso');</script>";
+
+    } else {
+        echo "<script>alert('Medico non trovato');</script>";
+    }
+
+    
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['elimina_utente'])) {
+    $query_utente = "SELECT id FROM users WHERE email = '" . $_POST["elimina_utente"] . "' " ;
+    $result_utente = mysqli_query($conn, $query_utente) or die("Query fallita: " . mysqli_error($conn));
+
+    if (mysqli_num_rows($result_utente) > 0) {
+    $query = "DELETE FROM users WHERE email = '".$_POST['elimina_utente'] ."' ";
     $pip = mysqli_query($conn, $query) or
     die ("Query fallita " . mysqli_error($conn) . " " . mysqli_errno($conn));
+
+    echo "<script>alert('Utente rimosso');</script>";
+
+    } else {
+    echo "<script>alert('Utente non trovato');</script>";
+    }
 }
 ?>
 
@@ -108,7 +142,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['elimina_nome'])) {
         <h5> Elimina utente</h5>
         <form method="POST" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
         <label></i> Email utente </label>
-        <input type="text"  name="elimina_nome" required placeholder="email utente"> <br>
+        <input type="text"  name="elimina_utente" required placeholder="Email utente"> <br>
         <button type="submit"><i class="fas fa-book-medical"></i> Elimina</button>
         </form>
 

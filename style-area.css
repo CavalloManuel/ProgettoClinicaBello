@@ -156,6 +156,7 @@
             font-size: 0.9rem;
             cursor: pointer;
             transition: all 0.3s;
+            width: 18%;
         }
         
         .btn-mostra:hover {
@@ -252,6 +253,25 @@
             font-family: inherit;
             font-size: 1rem;
             transition: border 0.3s, box-shadow 0.3s;
+        }
+
+            
+        button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 1rem 1.5rem;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+            width: 100%;
+        }
+        
+        button:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
         }
         
         @media (max-width: 768px) {

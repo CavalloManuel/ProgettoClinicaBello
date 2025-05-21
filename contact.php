@@ -69,8 +69,8 @@ if (isset($_GET['logout'])) {
                     <i class="fas fa-phone-alt"></i>
                     <div class="info-content">
                         <h3>Telefoni</h3>
-                        <p>Centralino: <a href="tel:+390612345678">06 12345678</a></p>
-                        <p>Emergenze: <a href="tel:+390612345679">06 12345679</a></p>
+                        <p>Centralino: <a href="tel:+390612345678">3925149334</a></p>
+                        <p>Emergenze: <a href="tel:+390612345679">3292620194</a></p>
                     </div>
                 </div>
                 
