@@ -1,7 +1,6 @@
 -- Crea il database
 CREATE DATABASE IF NOT EXISTS clinica;
 USE clinica;
-DROP TABLE medici;
 
 -- Crea la tabella users
 CREATE TABLE users (
@@ -49,17 +48,3 @@ INSERT INTO prenotazioni (user_id, medico_id, data_prenotazione) VALUES
 (2, 1, '2025-04-12'),
 (3, 3, '2025-04-15');
 
-CREATE TABLE immagini (
-id_immagine INT AUTO_INCREMENT PRIMARY KEY,
-descrizione VARCHAR(100),
-path VARCHAR(100) NOT NULL
-);
-
-INSERT INTO immagini (descrizione, path) VALUES
-("", 'images/img1.jpg'),
-("", 'images/img2.jpg'),
-("", 'images/img3.jpg'),
-("", 'images/img4.jpg'),
-("", 'images/img5.jpg'),
-("", 'images/img6.jpg'),
-("", 'images/img7.jpg');
